@@ -8,22 +8,49 @@
         ├── routes.md
     └── 📁src
         └── 📁api
+            └── 📁admin
+                ├── autenticate.py
+                ├── auth_admin.py
             └── 📁configs
                 ├── __init__.py
+                ├── db.py
+                ├── settings.py
+            └── 📁core
+                ├── __init__.py
+                ├── constants.py
+                ├── models.py
+                ├── utils.py
             └── 📁depends
                 ├── __init__.py
+                ├── auth_dep.py
+                ├── db_dep.py
+            └── 📁interfaces
+                ├── __init__.py
+                ├── access_service.py
+                ├── hash.py
+                ├── repository.py
+            └── 📁middlewares
+                ├── __init__.py
+                ├── database_middleware.py
             └── 📁models
                 ├── __init__.py
+                ├── auth.py
             └── 📁routes
                 ├── __init__.py
+                ├── auth.py
             └── 📁shemas
                 └── 📁input
                     ├── __init__.py
+                    ├── auth_input.py
                 └── 📁output
                     ├── __init__.py
+                    ├── auth_output.py
+                    ├── general_output.py
+            ├── __init__.py
             ├── .python-version
             ├── main.py
             ├── pyproject.toml
+            ├── repository.py
             ├── uv.lock
     ├── .editorconfig
     ├── .gitignore
