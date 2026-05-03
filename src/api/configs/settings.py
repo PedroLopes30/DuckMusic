@@ -9,6 +9,10 @@ DOT_ENV_FILE_PATH = join(BASE_DIR , ".env")
 
 #configs
 class Settings(BaseSettings):
+    #general
+    DEBUG : bool = False
+    SERVER_URL : str
+    
     # Database
     DATABASE_URL: str
     

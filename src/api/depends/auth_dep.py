@@ -4,10 +4,10 @@ from datetime import timedelta
 
 from api.configs.settings import settings
 
-from api.interfaces import IUserRepository , IHash , IAccessService
+from api.interfaces import IUserRepository , IHash , IAccessService , ITokensService
 from api.repository import UserRepository
-from api.core.utils import JwtService , BcryptHash
-from api.depends.db_dep import SessionDep
+from api.core.utils import JwtService , BcryptHash ,TokensService
+from api.depends.data_dep import SessionDep , RedisDep
 
 def get_user_repository(sessoin : SessionDep)->IUserRepository:
     return UserRepository(sessoin)
@@ -28,3 +28,8 @@ def get_bcrypt_hash()->IHash:
     return BcryptHash()
 
 BcryptHashDep = Annotated[IHash , Depends(get_bcrypt_hash)]
+
+def get_token_service(store : RedisDep)->ITokensService:
+    return TokensService(store)
+
+RedisTokenServiceDep = Annotated[ITokensService , Depends(get_token_service)]
