@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
+from sqladmin import Admin
 
 from api.routes import auth
 from api.middlewares.database_middleware import DbCommitMiddleware
-from api.configs.db import create_all_tables
+from api.configs.db import create_all_tables , get_engine
+from api.admin.auth_admin import UserAdmin
+from api.admin.autenticate import authentication_backend
 
 @asynccontextmanager
 async def lifespan(app : FastAPI):
@@ -17,6 +20,12 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+admin = Admin(
+    app,
+    get_engine(),
+    authentication_backend=authentication_backend
+)
+
 #routes
 app.include_router(
     auth.router,
@@ -25,3 +34,6 @@ app.include_router(
 
 #middlewares
 app.add_middleware(DbCommitMiddleware)
+
+#admin
+admin.add_view(UserAdmin)
