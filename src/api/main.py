@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from sqladmin import Admin
 
@@ -7,6 +8,7 @@ from api.middlewares.database_middleware import DbCommitMiddleware
 from api.configs.db import create_all_tables , get_engine
 from api.admin.auth_admin import UserAdmin
 from api.admin.autenticate import authentication_backend
+from api.configs.settings import settings
 
 @asynccontextmanager
 async def lifespan(app : FastAPI):
@@ -16,7 +18,7 @@ async def lifespan(app : FastAPI):
 app = FastAPI(
     title="DuckMusic",
     description="",
-    version="0.0.1",
+    version="1.0.0",
     lifespan=lifespan
 )
 
@@ -37,3 +39,7 @@ app.add_middleware(DbCommitMiddleware)
 
 #admin
 admin.add_view(UserAdmin)
+
+#others
+if settings.DEBUG:
+    app.mount("/media/",StaticFiles(directory=settings.UPLOAD_DIR),name="media")

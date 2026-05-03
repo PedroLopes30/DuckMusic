@@ -17,3 +17,13 @@ class UserRepository(
     def get_by_email(self, email):
         query = select(User).where(User.email == email)
         return self.session.exec(query).first()
+    
+    def get_by_id(self, id):
+        return self.session.get(User , id)
+    
+    def update(self, user):
+        self.session.add(user)
+        
+    def delete(self, user):
+        self.session.delete(user)
+        

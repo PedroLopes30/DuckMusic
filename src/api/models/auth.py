@@ -9,6 +9,12 @@ class User(
     table=True
 ):
     
+    photo_url : str | None = Field(
+        title="User photo",
+        nullable=True,
+        max_length=None
+    )
+    
     name : str = Field(
         title="user name",
         min_length=1,
