@@ -1,9 +1,10 @@
 from sqlmodel import Session , SQLModel , create_engine
 
-from api.configs.settings import Settings
+from api.configs.settings import settings
+from api.models import auth
 
 def get_engine():
-    return create_engine(Settings.DATABASE_URL)
+    return create_engine(settings.DATABASE_URL)
 
 def get_session():
     return Session(get_engine())
