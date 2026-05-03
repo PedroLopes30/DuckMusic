@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class TokenResponse(
+class JwtTokenResponse(
     BaseModel
 ):
     

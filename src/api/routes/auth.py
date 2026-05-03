@@ -2,8 +2,10 @@ from fastapi import APIRouter
 from typing import Annotated
 
 from api.shemas.input.auth_input import LoginUserSchema , RegisterUserSchema , VerifyTokenSchema , EmailUserSchema , PasswordUserSchema
-from api.shemas.output.auth_output import TokenResponse
+from api.shemas.output.auth_output import JwtTokenResponse
 from api.shemas.output.general_output import DetailResponse , TokenResponse
+
+from api.depends.auth_dep import UserRepositoryDep as Repository , JwtAccessServiceDep ,BcryptHashDep
 
 router = APIRouter(
     tags=["Auth"]
@@ -11,14 +13,14 @@ router = APIRouter(
 
 @router.post(
     path="/login/",
-    response_model=TokenResponse
+    response_model=JwtTokenResponse
 )
-def login_user(data : LoginUserSchema):
-    pass
+def login_user(data : LoginUserSchema , repository : Repository , accessManager : JwtAccessServiceDep , hash :BcryptHashDep):    
+    return JwtTokenResponse(accessToken="teste",refreshToken="tetse")
 
 @router.post(
     path="/register/",
-    response_model=TokenResponse,
+    response_model=JwtTokenResponse,
     status_code=201,
 )
 def register_user(data : RegisterUserSchema):
