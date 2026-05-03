@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends , Header , HTTPException
 from typing import Annotated
 from datetime import timedelta
 
@@ -8,6 +8,8 @@ from api.interfaces import IUserRepository , IHash , IAccessService , ITokensSer
 from api.repository import UserRepository
 from api.core.utils import JwtService , BcryptHash ,TokensService
 from api.depends.data_dep import SessionDep , RedisDep
+
+from api.models.auth import User
 
 def get_user_repository(sessoin : SessionDep)->IUserRepository:
     return UserRepository(sessoin)
@@ -33,3 +35,23 @@ def get_token_service(store : RedisDep)->ITokensService:
     return TokensService(store)
 
 RedisTokenServiceDep = Annotated[ITokensService , Depends(get_token_service)]
+
+def get_user_id(accessToken : Annotated[str , Header()] , accessService : JwtAccessServiceDep)->int:
+    if(not accessService.verify_token(accessToken)):
+        raise HTTPException(
+            status_code=401,
+            detail="unauthorize"
+        )
+        
+    return accessService.decode(accessToken).get("user_id")
+
+UserIdDep = Annotated[int , Depends(get_user_id)]
+
+def get_user(user_id : UserIdDep , repository : UserRepositoryDep)->User:
+    user = repository.get_by_id(user_id)
+    if (not user):
+        raise HTTPException(status_code=404, detail="not found")
+    
+    return user
+
+UserDep = Annotated[User,Depends(get_user)]

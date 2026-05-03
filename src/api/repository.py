@@ -24,3 +24,6 @@ class UserRepository(
     def update(self, user):
         self.session.add(user)
         
+    def delete(self, user):
+        self.session.delete(user)
+        

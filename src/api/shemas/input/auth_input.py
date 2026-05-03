@@ -1,4 +1,5 @@
 from pydantic import BaseModel , EmailStr , Field
+from fastapi import UploadFile
 
 class EmailUserSchema(
     BaseModel
@@ -36,4 +37,13 @@ class VerifyTokenSchema(
     BaseModel
 ):
     token : str
+    
+class UpdateUserSchema(
+    BaseModel
+):
+    name : str | None = Field(
+        title="username",
+        min_length=1,
+        examples=["Pedro Henrique"]
+    )
     

@@ -53,6 +53,9 @@ class JwtService(
             "iat" : now , 
             "type" : "refresh"
         }
+    
+    def decode(self , token : str):
+        return decode(token , self.secret_key , self.algorithm,)
         
 class BcryptHash(IHash):
     

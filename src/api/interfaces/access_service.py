@@ -10,3 +10,7 @@ class IAccessService(ABC):
     @abstractmethod
     def verify_token(self , token : str) -> bool:
         pass
+    
+    @abstractmethod
+    def decode(self , token) -> dict[str, str]:
+        pass

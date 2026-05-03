@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel , EmailStr
 
 class JwtTokenResponse(
     BaseModel
@@ -6,3 +6,12 @@ class JwtTokenResponse(
     
     accessToken : str
     refreshToken : str
+    
+class UserDetailReponse(
+    BaseModel
+):
+    
+    id : int
+    name : str
+    email : EmailStr
+    photo_url : str | None

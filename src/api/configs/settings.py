@@ -6,12 +6,14 @@ from typing import Optional
 #path
 BASE_DIR = Path(__file__).parent.parent.parent.parent
 DOT_ENV_FILE_PATH = join(BASE_DIR , ".env")
+PROJECT_DIR = join(BASE_DIR , "src" , "api")
 
 #configs
 class Settings(BaseSettings):
     #general
     DEBUG : bool = False
     SERVER_URL : str
+    UPLOAD_DIR : str = join(PROJECT_DIR , "media")
     
     # Database
     DATABASE_URL: str
