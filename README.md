@@ -46,38 +46,50 @@ cd duckMusic
 ## Project Structure
 ```
 └── 📁duckMusic
-    └── 📁docs
+    └── 📁docs # arquivos de documentação
+        ├── CHANGELOG.md
         ├── routes.md
-    └── 📁src
-        └── 📁api
-            └── 📁admin
-                ├── autenticate.py
+    └── 📁src # projeto
+        └── 📁api 
+            └── 📁admin # admin do projeto (gerenciamento dos dados)
+                ├── autenticate.py # logica de acesso ao admin
                 ├── auth_admin.py
             └── 📁configs
                 ├── __init__.py
+                ├── celery.py
                 ├── db.py
-                ├── settings.py
-            └── 📁core
+                ├── redis.py
+                ├── settings.py #configurações gerais
+            └── 📁core # logica reutilizavel
                 ├── __init__.py
                 ├── constants.py
+                ├── files.py
                 ├── models.py
                 ├── utils.py
-            └── 📁depends
+            └── 📁depends # dependencias injetadas nas views do fastapi
                 ├── __init__.py
                 ├── auth_dep.py
-                ├── db_dep.py
+                ├── data_dep.py
             └── 📁interfaces
                 ├── __init__.py
                 ├── access_service.py
                 ├── hash.py
                 ├── repository.py
+                ├── token_service.py
             └── 📁middlewares
                 ├── __init__.py
                 ├── database_middleware.py
+            └── 📁migrations
+                └── 📁versions
+                    ├── 07802f1139b3_add_user_photo_url.py
+                    ├── b6114cad90d4_first_migration.py
+                ├── env.py
+                ├── README
+                ├── script.py.mako
             └── 📁models
                 ├── __init__.py
                 ├── auth.py
-            └── 📁routes
+            └── 📁routes # endpoints
                 ├── __init__.py
                 ├── auth.py
             └── 📁shemas
@@ -90,11 +102,14 @@ cd duckMusic
                     ├── general_output.py
             ├── __init__.py
             ├── .python-version
-            ├── main.py
+            ├── alembic.ini
+            ├── main.py # arquivo principal
             ├── pyproject.toml
             ├── repository.py
+            ├── tasks.py
             ├── uv.lock
     ├── .editorconfig
+    ├── .env-example
     ├── .gitignore
     ├── CONTRIBUTING.md
     ├── license

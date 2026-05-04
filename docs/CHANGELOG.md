@@ -6,7 +6,11 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- sistema de recuperação de senha com envio de email
+- sistema de logout
+
+## [1.1.0] - 2026-05-03
+- sistema de recuperação de senha via email
+- CRUD do usuario
 
 ## [1.0.0] - 2026-04-02
 
