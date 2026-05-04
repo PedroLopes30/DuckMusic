@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from sqlmodel import SQLModel
-from api.models import auth
+from api import models
 
 from api.configs.settings import settings
 

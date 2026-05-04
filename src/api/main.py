@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from sqladmin import Admin
 
-from api.routes import auth
+from api.routes import auth , artists
 from api.middlewares.database_middleware import DbCommitMiddleware
 from api.configs.db import create_all_tables , get_engine
 from api.admin.auth_admin import UserAdmin
@@ -32,6 +32,10 @@ admin = Admin(
 app.include_router(
     auth.router,
     prefix="/account",
+)
+app.include_router(
+    artists.router,
+    prefix="/musics/artists",
 )
 
 #middlewares

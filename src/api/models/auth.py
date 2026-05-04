@@ -1,8 +1,10 @@
-from sqlmodel import SQLModel , Field
+from sqlmodel import SQLModel , Field , Relationship
 from pydantic import EmailStr
+from typing import Optional
 
 from api.core.models import BaseModel
 from api.core.constants import MEDIUM_CHAR
+from api.models.musics import Artist
 
 class User(
     BaseModel,
@@ -40,3 +42,7 @@ class User(
         default=False,
     )
     
+    artist : Optional[Artist] = Relationship(
+        back_populates="user",
+        sa_relationship_kwargs={"uselist": False}
+    )
