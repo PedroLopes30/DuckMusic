@@ -34,7 +34,12 @@ cd duckMusic
     uv sync
 ```
 
-3 - Runing
+3.set dot env variables
+```bash
+    cp .env-example .env
+```
+
+4 - Runing
 ```bash
     #with fastapi dev
     uv run fastapi dev main.py
@@ -110,11 +115,15 @@ cd duckMusic
             ├── uv.lock
     ├── .editorconfig
     ├── .env-example
+<img src="./docs/projeto-pds.png" src="models of the project" width="70%" height="70%" text-align="center" />
     ├── .gitignore
     ├── CONTRIBUTING.md
     ├── license
     └── README.md
 ```
+
+## Models
+<img src="./docs/projeto-pds.png" src="models of the project" width="70%" height="70%" />
 
 ## Contributors
 
