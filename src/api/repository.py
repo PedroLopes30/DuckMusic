@@ -25,7 +25,7 @@ class GenerictRepository(
         self.session.add(model)
     
     def delete(self , model : M) -> None:
-        self.delete(model)
+        self.session.delete(model)
         
     def get_all(self)->list[M]:
         query = select(self.model)
@@ -45,9 +45,6 @@ class UserRepository(
     def get_by_email(self, email):
         query = select(self.model).where(self.model.email == email)
         return self.session.exec(query).first()
-    
-    def get_by_id(self, id):
-        return self.get_by_id(self.model , id)
 
 class ArtistRepository(
     GenerictRepository[Artist]

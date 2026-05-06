@@ -49,7 +49,7 @@ UserIdDep = Annotated[int , Depends(get_user_id)]
 
 def get_user(user_id : UserIdDep , repository : UserRepositoryDep)->User:
     user = repository.get_by_id(user_id)
-    if (not user):
+    if not user:
         raise HTTPException(status_code=404, detail="not found")
     
     return user
