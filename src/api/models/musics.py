@@ -19,8 +19,28 @@ class Artist(
     )
     
     biography : str | None = Field(
-        "artistic biography",
+        title="artistic biography",
         nullable=True,
         max_length=LONG_CHAR
     )
     user : "User" = Relationship(back_populates="artist")
+
+class Music(
+    BaseModel,
+    table=True
+):
+    __tablename__="musics"
+
+   
+    name : str = Field(
+        title="music name",
+        nullable=False,
+        max_length=SHORT_CHAR
+    )
+
+    file_path : str = Field(
+        nullable= False,
+        max_length=LONG_CHAR
+    )
+
+    album_id : int = Field(foreign_key="album.id")

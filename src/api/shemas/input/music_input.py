@@ -9,6 +9,15 @@ class RegisterArtistInput(BaseModel):
         title="Artistic biography"
     )
 
+class RegisterMusicInput(BaseModel):
+    name : str = Field(
+        title="music name"
+    )
+
+    file_path : str = Field(
+        title="file path"
+    )
+    
 class UpdateArtistInput(BaseModel):
     artistic_name : str | None = Field(
         title="artistic name",

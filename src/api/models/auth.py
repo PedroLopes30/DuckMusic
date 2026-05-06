@@ -45,4 +45,4 @@ class User(
     artist : Optional[Artist] = Relationship(
         back_populates="user",
         sa_relationship_kwargs={"uselist": False}
-    )
+    ) 
