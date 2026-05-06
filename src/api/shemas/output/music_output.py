@@ -12,3 +12,14 @@ class ArtistDetailResponse(
     name : str
     biography : str | None
 
+class MusicListResponse(
+    BaseModel
+):
+    id : int
+    name : str
+
+class MusicDetailResponse(
+    MusicListResponse
+):
+    file_path : str
+    album_id : int     

@@ -1,7 +1,7 @@
 from abc import ABC , abstractmethod
 from typing import Generic , TypeVar
 
-from api.models import User , Artist
+from api.models import User , Artist , Music
 
 M = TypeVar("M")
 
@@ -42,5 +42,10 @@ class IUserRepository(
     
 class IArtistRepository(
     IRepository[Artist]
+):
+    pass
+
+class IMusicRepository(
+    IRepository[Music]
 ):
     pass
