@@ -44,3 +44,31 @@ class Music(
     )
 
     album_id : int = Field(foreign_key="album.id")
+    albums : list["Album"] = Relationship(back_populates="artist")
+    
+class Album(
+    BaseModel,
+    table=True,
+):
+    __tablename__ = "albums"
+    
+    artist_id : int = Field(foreign_key="artists.id")
+    name : str = Field(
+        title="album name",
+        nullable=False,
+        max_length=SHORT_CHAR
+    )
+    
+    description : str | None = Field(
+     title="album description",
+     nullable=True,   
+    )
+    
+    cover_url : str | None = Field(
+        title="album cover url",
+        nullable=True
+    )
+    
+    artist : Artist = Relationship(
+        back_populates="albums"
+    )

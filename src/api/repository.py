@@ -2,7 +2,7 @@ from sqlmodel import select , Session  , SQLModel
 from typing import Generic , TypeVar
 
 from api.interfaces.repository import IUserRepository
-from api.models import User , Artist , Music
+from api.models import User , Artist , Music , Album
 
 M = TypeVar("M",bound=SQLModel)
 
@@ -58,3 +58,10 @@ class MusicRepository(
     
     def __init__(self, session):
         super().__init__(session, Music)
+        
+class AlbumRepository(
+    GenerictRepository[Album]
+):
+    
+    def __init__(self, session: Session):
+        super().__init__(session, Album)
