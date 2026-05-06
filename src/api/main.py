@@ -7,7 +7,7 @@ from api.routes import auth , artists , albums
 from api.middlewares.database_middleware import DbCommitMiddleware
 from api.configs.db import create_all_tables , get_engine
 from api.admin.auth_admin import UserAdmin
-from api.admin.music_admin import ArtistAdmin , AlbumAdmin
+from api.admin.music_admin import ArtistAdmin , AlbumAdmin, MusicAdmin, CategoryAdmin
 from api.admin.autenticate import authentication_backend
 from api.configs.settings import settings
 
@@ -50,6 +50,8 @@ app.add_middleware(DbCommitMiddleware)
 admin.add_view(UserAdmin)
 admin.add_view(ArtistAdmin)
 admin.add_view(AlbumAdmin)
+admin.add_view(MusicAdmin)
+admin.add_view(CategoryAdmin)
 
 #others
 if settings.DEBUG:
