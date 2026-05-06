@@ -115,7 +115,6 @@ cd duckMusic
             ├── uv.lock
     ├── .editorconfig
     ├── .env-example
-<img src="./docs/projeto-pds.png" src="models of the project" width="70%" height="70%" text-align="center" />
     ├── .gitignore
     ├── CONTRIBUTING.md
     ├── license
