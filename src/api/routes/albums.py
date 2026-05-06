@@ -1,0 +1,39 @@
+from fastapi import APIRouter , HTTPException
+
+from api.shemas.output.music_output import AlbumsListReponse ,AlbumDetailReponse
+from api.shemas.output.general_output import DetailResponse
+from api.depends.musics_dep import AlbumRepositoryDep as RepositoryDep
+
+router = APIRouter(
+    tags=["Albums"],
+)
+
+@router.get(
+    "/",
+    response_model=list[AlbumsListReponse]
+)
+def get_albums_list(repository : RepositoryDep,page : int = 0):
+    return [AlbumsListReponse(**album.model_dump() , artist=album.artist.artistic_name) for album in repository.get_limited(10,page)]
+
+@router.get(
+    "/{id}/",
+    response_model=AlbumDetailReponse
+)
+def get_algum_detail(repository : RepositoryDep , id : int):
+    album = repository.get_by_id(id)
+    
+    if album is None:
+        raise HTTPException(
+            status_code=404,
+            detail="album not found"
+        )
+    
+    return AlbumDetailReponse(**album.model_dump() , artist=album.artist.artistic_name)
+
+@router.post(
+    "/",
+    status_code=201,
+    response_model=DetailResponse
+)
+def create_album():
+    pass

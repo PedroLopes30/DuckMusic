@@ -23,3 +23,17 @@ class MusicDetailResponse(
 ):
     file_path : str
     album_id : int     
+
+class AlbumsListReponse(
+    BaseModel
+):
+    
+    id : int
+    artist : str
+    name : str
+    cover_url : str | None
+ 
+class AlbumDetailReponse(
+    AlbumsListReponse
+) :
+   description : str | None 

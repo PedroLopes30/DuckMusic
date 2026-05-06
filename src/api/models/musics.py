@@ -24,6 +24,9 @@ class Artist(
         max_length=LONG_CHAR
     )
     user : "User" = Relationship(back_populates="artist")
+    albums : list["Album"] = Relationship(
+        back_populates="artist"
+    )
 
 class Music(
     BaseModel,
@@ -43,8 +46,8 @@ class Music(
         max_length=LONG_CHAR
     )
 
-    album_id : int = Field(foreign_key="album.id")
-    albums : list["Album"] = Relationship(back_populates="artist")
+    album_id : int = Field(foreign_key="albums.id")
+    albums : "Album" = Relationship(back_populates="musics")
     
 class Album(
     BaseModel,
@@ -70,5 +73,8 @@ class Album(
     )
     
     artist : Artist = Relationship(
+        back_populates="albums"
+    )
+    musics : list[Music] = Relationship(
         back_populates="albums"
     )
