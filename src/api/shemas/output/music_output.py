@@ -12,3 +12,5 @@ class ArtistDetailResponse(
     name : str
     biography : str | None
 
+    class Config:
+        pass
