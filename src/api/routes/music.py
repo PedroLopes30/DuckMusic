@@ -5,7 +5,7 @@ from api.core.files import save_file
 from api.shemas.output.music_output import MusicDetailResponse
 
 router = APIRouter(
-    tags="Music"
+    tags=["Music"]
 )
 
 @router.post(
