@@ -4,7 +4,7 @@ from api.shemas.output.music_output import AlbumsListReponse ,AlbumDetailReponse
 from api.shemas.output.general_output import DetailResponse
 from api.depends.musics_dep import AlbumRepositoryDep as RepositoryDep
 from api.depends.musics_dep import ArtistRepositoryDep
-from api.depends.auth_dep import User
+from api.depends.auth_dep import UserDep
 
 router = APIRouter(
     tags=["Albums"],
@@ -43,7 +43,7 @@ def create_album():
 @router.delete(
     path="/{id}"
 )
-def delete_album(id_album: int, repository:RepositoryDep, user : User):
+def delete_album(id_album: int, repository:RepositoryDep, user : UserDep):
     album = repository.get_by_id(id=id_album)
     if not album:
         raise HTTPException (
@@ -64,9 +64,9 @@ def delete_album(id_album: int, repository:RepositoryDep, user : User):
 @router.patch(
     path="/{id}"
 )
-def update_album(id_album: int, repository: RepositoryDep, user : User, data:UpdateAlbumInput):
+def update_album(id_album: int, repository: RepositoryDep, user : UserDep, data:UpdateAlbumInput):
     album = repository.get_by_id(id=id_album)
-    data_dict = data.modeldump()
+    data_dict = data.model_dump()
     if not album:
         raise HTTPException (
             status_code=404, detail="The album doesn't exist"
