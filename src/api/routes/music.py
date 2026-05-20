@@ -1,18 +1,37 @@
-from fastapi import APIRouter , HTTPException, UploadFile, File
-from models import Music
-from api.depends.musics_dep import MusicRepositoryDep
+from fastapi import APIRouter , HTTPException, UploadFile, File ,Form
+
+from api.models import Music
+from api.depends.musics_dep import MusicRepositoryDep , AlbumRepositoryDep
 from api.core.files import save_file
 from api.shemas.output.music_output import MusicDetailResponse
 
+from api.depends.auth_dep import UserDep
+
 router = APIRouter(
-    tags="Music"
+    tags=["Music"]
 )
 
 @router.post(
-    path="/"
+    path="/",
+    status_code=201,
+    response_model=MusicDetailResponse
 )
-def add_music():
-    pass
+def add_music(user : UserDep , repository : MusicRepositoryDep , album_repository : AlbumRepositoryDep ,name : str = Form() , album_id : int = Form() , music_file : UploadFile = File(...)):
+    
+    album = album_repository.get_by_id(album_id)
+    artist = user.artist
+    
+    if not album:
+        raise HTTPException(status_code=404 , detail="album not found")
+    
+    if  artist is None or album.artist_id != artist.id:
+        raise HTTPException(status_code=401,detail="unauthorize")
+    
+    music_path = save_file(music_file)
+    
+    music = repository.create(Music(albums=album,name=name,file_path=music_path))
+    return MusicDetailResponse(id=music.id , name=music.name,file_path=music.file_path,album_id=music.album_id)
+    
 
 @router.delete(
     path="/{id_music}",

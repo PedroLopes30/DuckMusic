@@ -60,6 +60,13 @@ def get_artist_detail(id : int , repository : RepositoryDep):
 def update_artist(user : UserDep , repository : RepositoryDep , data : UpdateArtistInput):
     data_dict = data.model_dump()
     artist = user.artist
+    
+    if artist is None:
+        raise HTTPException(
+            400,
+            detail="You are not an artist"
+        )
+    
     for key , value in data_dict.items():
         if data_dict[key]:
             setattr(artist , key , value)

@@ -1,8 +1,11 @@
-from fastapi import APIRouter , HTTPException
+from fastapi import APIRouter , HTTPException , Form , UploadFile
 
 from api.shemas.output.music_output import AlbumsListReponse ,AlbumDetailReponse
 from api.shemas.output.general_output import DetailResponse
+from api.depends.auth_dep import UserDep
 from api.depends.musics_dep import AlbumRepositoryDep as RepositoryDep
+from api.models.musics import Album
+from api.core.files import save_file
 
 router = APIRouter(
     tags=["Albums"],
@@ -35,5 +38,17 @@ def get_algum_detail(repository : RepositoryDep , id : int):
     status_code=201,
     response_model=DetailResponse
 )
-def create_album():
-    pass
+def create_album(user : UserDep , repository : RepositoryDep , name : str = Form() , description : str | None = Form(None) , cover : UploadFile = Form(None)):
+    artist = user.artist
+    
+    if artist is None:
+        raise HTTPException(
+            status_code=400,
+            detail="You are not an artist"
+        )
+        
+    cover_path = save_file(cover , "albums/cover")
+    instance = Album(name=name , description=description , cover_url=cover_path)
+    repository.create(instance , artist)
+    return DetailResponse(detail="Album created successfully")
+

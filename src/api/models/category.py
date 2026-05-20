@@ -16,7 +16,7 @@ class Category(
     )
 
     slug : str = Field(
-        tittle="slugs",
+        title="slugs",
         nullable=False,
         max_length=LONG_CHAR
     )
@@ -26,5 +26,5 @@ class AlbunsCategory(
     table=True
 ):
     __tablename__="albuns category"
-    category_id : int = Field(foreign_key="category.id")
-    album_id : int = Field(foreign_key="album.id")
+    category_id : int = Field(foreign_key="categories.id")
+    album_id : int = Field(foreign_key="albums.id")
