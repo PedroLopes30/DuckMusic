@@ -27,7 +27,6 @@ class MusicDetailResponse(
 class AlbumsListReponse(
     BaseModel
 ):
-    
     id : int
     artist : str
     name : str

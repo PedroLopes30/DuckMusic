@@ -8,7 +8,7 @@ class Category(
     BaseModel,
     table=True
 ):
-    __tablename__="categories"
+    __tablename__="category"
     name : str = Field(
         title="category name",
         nullable=False,
@@ -16,7 +16,7 @@ class Category(
     )
 
     slug : str = Field(
-        tittle="slugs",
+        title="slugs",
         nullable=False,
         max_length=LONG_CHAR
     )
@@ -25,6 +25,6 @@ class AlbunsCategory(
     BaseModel,
     table=True
 ):
-    __tablename__="albuns category"
+    __tablename__="albums category"
     category_id : int = Field(foreign_key="category.id")
-    album_id : int = Field(foreign_key="album.id")
+    album_id : int = Field(foreign_key="albums.id")
