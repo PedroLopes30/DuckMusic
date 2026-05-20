@@ -52,3 +52,48 @@ def create_album(user : UserDep , repository : RepositoryDep , name : str = Form
     repository.create(instance , artist)
     return DetailResponse(detail="Album created successfully")
 
+@router.delete(
+    path="/{id}"
+)
+def delete_album(id_album: int, repository:RepositoryDep, user : UserDep):
+    album = repository.get_by_id(id=id_album)
+    if not album:
+        raise HTTPException (
+            status_code=404, detail="The album doesn't exist"
+        )
+    artist = user.artist
+    if artist is None:
+        raise HTTPException(
+            status_code=401, detail="Access denied: you are not authorized to make this change"
+        )
+
+    if not artist.id == album.artist_id:
+        raise HTTPException(
+            status_code=401, detail="Access denied: you are not authorized to make this change"
+        )
+    repository.delete(album)
+
+@router.patch(
+    path="/{id}"
+)
+def update_album(id_album: int, repository: RepositoryDep, user : UserDep, data:UpdateAlbumInput):
+    album = repository.get_by_id(id=id_album)
+    data_dict = data.model_dump()
+    if not album:
+        raise HTTPException (
+            status_code=404, detail="The album doesn't exist"
+        )
+    artist = user.artist
+    if artist is None:
+        raise HTTPException(
+            status_code=401, detail="Access denied: you are not authorized to make this change"
+        )
+    if not artist.id == album.artist_id:
+        raise HTTPException(
+            status_code=401, detail="Access denied: you are not authorized to make this change"
+        )
+    for key , value in data_dict.items():
+        if data_dict[key]:
+            setattr(album , key , value)
+        repository.update(album)
+    return DetailResponse(detail="data updated")

@@ -26,3 +26,15 @@ class UpdateArtistInput(BaseModel):
     biography : str | None = Field(
         title="Artistic biography"
     )
+
+class UpdateAlbumInput(BaseModel):
+    name : str | None = Field(
+    title="album name"),
+
+    description : str | None = Field(
+    title="description"
+    )
+     
+    cover_url : str | None = Field(
+    title="cover_url"
+    )
