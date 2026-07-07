@@ -1,7 +1,7 @@
 from fastapi import APIRouter , HTTPException , Form , UploadFile
 
 from api.shemas.output.music_output import AlbumsListReponse ,AlbumDetailReponse
-from api.shemas.output.general_output import DetailResponse
+from api.shemas.output.general_output import DetailResponseWithId , DetailResponse
 from api.depends.auth_dep import UserDep
 from api.depends.musics_dep import AlbumRepositoryDep as RepositoryDep
 from api.models.musics import Album
@@ -36,7 +36,7 @@ def get_algum_detail(repository : RepositoryDep , id : int):
 @router.post(
     "/",
     status_code=201,
-    response_model=DetailResponse
+    response_model=DetailResponseWithId
 )
 def create_album(user : UserDep , repository : RepositoryDep , name : str = Form() , description : str | None = Form(None) , cover : UploadFile = Form(None)):
     artist = user.artist
@@ -48,12 +48,13 @@ def create_album(user : UserDep , repository : RepositoryDep , name : str = Form
         )
         
     cover_path = save_file(cover , "albums/cover")
-    instance = Album(name=name , description=description , cover_url=cover_path)
-    repository.create(instance , artist)
-    return DetailResponse(detail="Album created successfully")
+    instance = Album(name=name , description=description , cover_url=cover_path , artist=artist)
+    album = repository.create(instance)
+    return DetailResponseWithId(detail="Album created successfully" , id = album.id)
 
 @router.delete(
-    path="/{id}"
+    path="/{id_album}/",
+    status_code=204
 )
 def delete_album(id_album: int, repository:RepositoryDep, user : UserDep):
     album = repository.get_by_id(id=id_album)
@@ -74,11 +75,11 @@ def delete_album(id_album: int, repository:RepositoryDep, user : UserDep):
     repository.delete(album)
 
 @router.patch(
-    path="/{id}"
+    path="/{id_album}"
 )
-def update_album(id_album: int, repository: RepositoryDep, user : UserDep, data:UpdateAlbumInput):
+def update_album(id_album: int, repository: RepositoryDep, user : UserDep, name : str | None = Form(None),description : str | None = Form(None),cover : UploadFile | None = Form(None)):
     album = repository.get_by_id(id=id_album)
-    data_dict = data.model_dump()
+    data_dict = {"name" : name , "description" : description}
     if not album:
         raise HTTPException (
             status_code=404, detail="The album doesn't exist"
@@ -95,5 +96,10 @@ def update_album(id_album: int, repository: RepositoryDep, user : UserDep, data:
     for key , value in data_dict.items():
         if data_dict[key]:
             setattr(album , key , value)
-        repository.update(album)
+            
+    if cover:
+        cover_url = save_file(cover,"albums/cover")
+        album.cover_url=cover_url
+    
+    repository.update(album)
     return DetailResponse(detail="data updated")

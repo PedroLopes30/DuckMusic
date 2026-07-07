@@ -59,9 +59,18 @@ class MusicRepository(
     def __init__(self, session):
         super().__init__(session, Music)
         
+    def get_by_id_and_album_id(self , id : int , album_id : int)->Music:
+        return self.session.exec(select(Music).where(Music.album_id == album_id , Music.id == id)).first()
+    
+            
 class AlbumRepository(
     GenerictRepository[Album]
 ):
     
     def __init__(self, session: Session):
         super().__init__(session, Album)
+
+    def get_musics_limited(self , id , limit : int , started_at : int)->list[Music]:
+        query = select(Music).where(Music.album_id == id).offset(started_at).limit(limit)
+        return self.session.exec(query).all()
+ 

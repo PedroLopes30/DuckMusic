@@ -4,10 +4,13 @@ from datetime import timedelta
 
 from api.configs.settings import settings
 
+from api.models import Album
+
 from api.interfaces import IUserRepository , IHash , IAccessService , ITokensService
 from api.repository import UserRepository
 from api.core.utils import JwtService , BcryptHash ,TokensService
 from api.depends.data_dep import SessionDep , RedisDep
+from api.depends.musics_dep import AlbumRepositoryDep
 
 from api.models.auth import User
 
@@ -55,3 +58,18 @@ def get_user(user_id : UserIdDep , repository : UserRepositoryDep)->User:
     return user
 
 UserDep = Annotated[User,Depends(get_user)]
+
+def is_artists(user : UserDep , album_repository : AlbumRepositoryDep,album_id : int) -> None:
+    
+    album = album_repository.get_by_id(album_id)
+    artist = user.artist
+    
+    if not album:
+        raise HTTPException(status_code=404 , detail="album not found")
+    
+    if  artist is None or album.artist_id != artist.id:
+        raise HTTPException(status_code=401,detail="unauthorize")
+    
+    return album
+    
+IsAlbumOnwer = Annotated[Album , Depends(is_artists)]

@@ -48,9 +48,13 @@ class IArtistRepository(
 class IMusicRepository(
     IRepository[Music]
 ):
-    pass
+    @abstractmethod
+    def get_by_id_and_album_id(self , id : int , album_id : int)->Music:
+        pass
 
 class IAlbumRepository(
     IRepository[Album]
 ):
-    pass
+    @abstractmethod
+    def get_musics_limited(self , id , limit : int , start_at : int) -> list[Music]:
+        pass

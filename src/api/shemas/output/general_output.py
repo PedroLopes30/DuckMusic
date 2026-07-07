@@ -5,6 +5,12 @@ class DetailResponse(
 ):
     detail : str
     
+class DetailResponseWithId(
+    DetailResponse
+):
+    
+    id : int
+    
 class TokenResponse(
     BaseModel
 ):

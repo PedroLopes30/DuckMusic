@@ -44,13 +44,9 @@ app.include_router(
 )
 app.include_router(
     music.router,
-    prefix="/musics"
+    prefix=""
 )
 
-app.include_router(
-    music.router,
-    prefix="/musics"
-)
 
 #middlewares
 app.add_middleware(DbCommitMiddleware)
