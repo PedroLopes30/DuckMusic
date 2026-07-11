@@ -8,7 +8,7 @@ class Category(
     BaseModel,
     table=True
 ):
-    __tablename__="category"
+    __tablename__="categories"
     name : str = Field(
         title="category name",
         nullable=False,
