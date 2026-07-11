@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from sqladmin import Admin
 
-from api.routes import auth , artists , albums, music
+from api.routes import auth , artists , albums, music , favorites
 from api.middlewares.database_middleware import DbCommitMiddleware
 from api.configs.db import create_all_tables , get_engine
 from api.admin.auth_admin import UserAdmin
@@ -42,6 +42,10 @@ app.include_router(
 app.include_router(
     albums.router,
     prefix="/albums"
+)
+app.include_router(
+    favorites.router,
+    prefix="/favorites"
 )
 app.include_router(
     music.router,

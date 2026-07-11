@@ -1,7 +1,7 @@
 from abc import ABC , abstractmethod
 from typing import Generic , TypeVar
 
-from api.models import User , Artist , Music, Album
+from api.models import User , Artist , Music, Album , FavoritesMusics , FavoritesAlbums
 
 M = TypeVar("M")
 
@@ -57,4 +57,21 @@ class IAlbumRepository(
 ):
     @abstractmethod
     def get_musics_limited(self , id , limit : int , start_at : int) -> list[Music]:
+        pass
+    
+class IFavoritesMusicsRepository(
+    IRepository[FavoritesMusics]
+):
+    pass
+
+class IFavoritesMusicsRepository(
+    IRepository[FavoritesAlbums]
+):
+    def get_by_user_id(self , user_id : int) -> list[FavoritesMusics]:
+        pass
+    
+    def delete_user_favorite_music(self ,user_id : int , music_id : int) -> None:
+        pass
+    
+    def music_exists_in_user_favorites(self , user_id : int , music_id : int) -> bool:
         pass
