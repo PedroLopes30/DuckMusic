@@ -46,3 +46,6 @@ class User(
         back_populates="user",
         sa_relationship_kwargs={"uselist": False}
     ) 
+    
+    favorites_musics: list["FavoritesMusics"] = Relationship(back_populates="user")
+    favorites_albums: list["FavoritesAlbums"] = Relationship(back_populates="user")

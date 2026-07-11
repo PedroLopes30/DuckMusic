@@ -49,6 +49,8 @@ class Music(
     album_id : int = Field(foreign_key="albums.id")
     albums : "Album" = Relationship(back_populates="musics")
     
+    favorites : list["FavoritesMusics"] = Relationship(back_populates="musics")
+    
 class Album(
     BaseModel,
     table=True,
@@ -78,3 +80,30 @@ class Album(
     musics : list[Music] = Relationship(
         back_populates="albums"
     )
+    
+    favorites : list["FavoritesAlbums"] = Relationship(back_populates="album")
+    
+class FavoritesMusics(
+    BaseModel,
+    table=True,
+):
+    __tablename__ = "favorites_musics"
+
+    user_id: int = Field(foreign_key="user.id")
+    music_id: int = Field(foreign_key="musics.id")
+
+    user: "User" = Relationship(back_populates="favorites_musics")
+    musics: "Music" = Relationship(back_populates="favorites")
+    
+
+class FavoritesAlbums(
+    BaseModel,
+    table=True,
+):
+    __tablename__ = "favorites_albums"
+
+    user_id: int = Field(foreign_key="user.id")
+    albums_id: int = Field(foreign_key="albums.id")
+    
+    user: "User" = Relationship(back_populates="favorites_albums")
+    album: "Album" = Relationship(back_populates="favorites")
