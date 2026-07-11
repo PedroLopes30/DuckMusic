@@ -25,7 +25,7 @@ class MusicDetailResponse(
     file_path : str
     album_id : int     
 
-class AlbumsListReponse(
+class AlbumsListResponse(
     BaseModel
 ):
     id : int
@@ -33,7 +33,19 @@ class AlbumsListReponse(
     name : str
     cover_url : str | None
  
-class AlbumDetailReponse(
-    AlbumsListReponse
+class AlbumDetailResponse(
+    AlbumsListResponse
 ) :
    description : str | None 
+
+class PlaylistsListResponse (
+    BaseModel
+):
+    id : int
+    name : str
+    user_id : int
+
+class PlaylistDetailReponse(
+    PlaylistsListResponse
+) :
+   description : str | None     

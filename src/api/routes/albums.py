@@ -1,6 +1,6 @@
 from fastapi import APIRouter , HTTPException , Form , UploadFile
 
-from api.shemas.output.music_output import AlbumsListReponse ,AlbumDetailReponse
+from api.shemas.output.music_output import AlbumsListResponse ,AlbumDetailResponse
 from api.shemas.output.general_output import DetailResponseWithId , DetailResponse
 from api.depends.auth_dep import UserDep
 from api.depends.musics_dep import AlbumRepositoryDep as RepositoryDep
@@ -13,14 +13,14 @@ router = APIRouter(
 
 @router.get(
     "/",
-    response_model=list[AlbumsListReponse]
+    response_model=list[AlbumsListResponse]
 )
 def get_albums_list(repository : RepositoryDep,page : int = 0):
-    return [AlbumsListReponse(**album.model_dump() , artist=album.artist.artistic_name) for album in repository.get_limited(10,page)]
+    return [AlbumsListResponse(**album.model_dump() , artist=album.artist.artistic_name) for album in repository.get_limited(10,page)]
 
 @router.get(
     "/{id}/",
-    response_model=AlbumDetailReponse
+    response_model=AlbumDetailResponse
 )
 def get_algum_detail(repository : RepositoryDep , id : int):
     album = repository.get_by_id(id)
@@ -31,7 +31,7 @@ def get_algum_detail(repository : RepositoryDep , id : int):
             detail="album not found"
         )
     
-    return AlbumDetailReponse(**album.model_dump() , artist=album.artist.artistic_name)
+    return AlbumDetailResponse(**album.model_dump() , artist=album.artist.artistic_name)
 
 @router.post(
     "/",
@@ -94,7 +94,7 @@ def update_album(id_album: int, repository: RepositoryDep, user : UserDep, name 
             status_code=401, detail="Access denied: you are not authorized to make this change"
         )
     for key , value in data_dict.items():
-        if data_dict[key]:
+        if value is not None:
             setattr(album , key , value)
             
     if cover:
