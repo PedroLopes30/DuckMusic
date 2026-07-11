@@ -2,7 +2,7 @@ from sqlmodel import select , Session  , SQLModel
 from typing import Generic , TypeVar
 
 from api.interfaces.repository import IUserRepository
-from api.models import User , Artist , Music , Album
+from api.models import User , Artist , Music , Album , Playlist
 
 M = TypeVar("M",bound=SQLModel)
 
@@ -73,4 +73,9 @@ class AlbumRepository(
     def get_musics_limited(self , id , limit : int , started_at : int)->list[Music]:
         query = select(Music).where(Music.album_id == id).offset(started_at).limit(limit)
         return self.session.exec(query).all()
- 
+
+class PlaylistRepository(
+    GenerictRepository[Playlist]
+):
+    def __init__(self, session: Session):
+        super().__init__(session, Playlist) 

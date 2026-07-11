@@ -1,7 +1,7 @@
 from abc import ABC , abstractmethod
 from typing import Generic , TypeVar
 
-from api.models import User , Artist , Music, Album
+from api.models import User , Artist , Music, Album , Playlist , PlaylistMusics
 
 M = TypeVar("M")
 
@@ -58,3 +58,8 @@ class IAlbumRepository(
     @abstractmethod
     def get_musics_limited(self , id , limit : int , start_at : int) -> list[Music]:
         pass
+
+class IPlaylistRepository(
+    IRepository[Playlist]
+): 
+    pass   
