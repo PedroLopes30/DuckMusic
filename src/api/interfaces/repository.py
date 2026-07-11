@@ -62,16 +62,29 @@ class IAlbumRepository(
 class IFavoritesMusicsRepository(
     IRepository[FavoritesMusics]
 ):
-    pass
-
-class IFavoritesMusicsRepository(
-    IRepository[FavoritesAlbums]
-):
+    @abstractmethod
     def get_by_user_id(self , user_id : int) -> list[FavoritesMusics]:
         pass
     
+    @abstractmethod
     def delete_user_favorite_music(self ,user_id : int , music_id : int) -> None:
         pass
     
+    @abstractmethod
     def music_exists_in_user_favorites(self , user_id : int , music_id : int) -> bool:
+        pass
+
+class IFavoritesAlbumsRepository(
+    IRepository[FavoritesAlbums]
+):
+    @abstractmethod
+    def get_by_user_id(self , user_id : int) -> list[FavoritesAlbums]:
+        pass
+    
+    @abstractmethod
+    def delete_user_favorite_album(self ,user_id : int , album_id : int) -> None:
+        pass
+    
+    @abstractmethod
+    def album_exists_in_user_favorites(self , user_id : int , album_id : int) -> bool:
         pass

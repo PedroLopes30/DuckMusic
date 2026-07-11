@@ -1,8 +1,8 @@
 from fastapi import Depends
 from typing import Annotated
 
-from api.interfaces.repository import IArtistRepository , IMusicRepository, IAlbumRepository , IFavoritesMusicsRepository
-from api.repository import ArtistRepository , MusicRepository, AlbumRepository , FavoriteMusicsRepository
+from api.interfaces.repository import IArtistRepository , IMusicRepository, IAlbumRepository , IFavoritesMusicsRepository, IFavoritesAlbumsRepository
+from api.repository import ArtistRepository , MusicRepository, AlbumRepository , FavoriteMusicsRepository, FavoriteAlbumsRepository
 from api.depends.data_dep import SessionDep
 
 def get_artist_repository(session : SessionDep)->IArtistRepository:
@@ -24,3 +24,8 @@ def get_favorites_musics_repository(session : SessionDep) -> IFavoritesMusicsRep
     return FavoriteMusicsRepository(session)
 
 FavoritesMusicsRepositoryDep = Annotated[IFavoritesMusicsRepository , Depends(get_favorites_musics_repository)]
+
+def get_favorites_albums_repository(session : SessionDep) -> IFavoritesAlbumsRepository:
+    return FavoriteAlbumsRepository(session)
+
+FavoritesAlbumsRepositoryDep = Annotated[IFavoritesAlbumsRepository , Depends(get_favorites_albums_repository)]
