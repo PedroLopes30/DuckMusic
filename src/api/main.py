@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from sqladmin import Admin
@@ -50,6 +51,10 @@ app.include_router(
 
 #middlewares
 app.add_middleware(DbCommitMiddleware)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"]
+)
 
 #admin
 admin.add_view(UserAdmin)

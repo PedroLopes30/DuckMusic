@@ -1,8 +1,9 @@
-from fastapi import APIRouter , HTTPException, UploadFile, File ,Form
+from fastapi import APIRouter , HTTPException, UploadFile, File ,Form , Header 
+from fastapi.responses import StreamingResponse
 
 from api.models import Music
 from api.depends.musics_dep import MusicRepositoryDep , AlbumRepositoryDep
-from api.core.files import save_file
+from api.core.files import save_file , get_file_chunk , get_file_size
 from api.shemas.output.music_output import MusicDetailResponse , MusicListResponse
 
 from api.depends.auth_dep import UserDep , IsAlbumOnwer
@@ -71,3 +72,46 @@ def list_music(repository: MusicRepositoryDep, page: int = 0):
 )
 def list_music(repository: AlbumRepositoryDep , id_album : int, page: int = 0):
     return repository.get_musics_limited(id_album,15 , page)
+
+@router.get(
+    "/albums/{id_album}/musics/{id_music}/"
+)
+def music_detail(id_album : int , id_music : int , repository : MusicRepositoryDep):
+    music = repository.get_by_id_and_album_id(id_music , id_album)
+    if not music:
+        raise HTTPException(status_code=404)
+    return MusicDetailResponse(**music.model_dump())
+@router.get(
+    "/albums/{id_album}/musics/{id_music}/stream/"
+)
+def stream_music(id_album : int , id_music : int , repository : MusicRepositoryDep , music_range: str = Header(None)):
+    music = repository.get_by_id_and_album_id(id_music , id_album)
+    if not music:
+        raise HTTPException(status_code=404)
+    
+    music_size = get_file_size(music.file_path)
+    start , end , status_code = 0 , music_size-1 , 200
+    if music_range:
+        status_code = 206 
+        range = range.replace("bytes=", "").split("-")
+        start = int(range[0])
+        if range[1]:
+            end = int(range[1])
+    
+    end = min(end, music_size - 1)
+    content_size = end - start + 1        
+    
+    headers = {
+        "Content-Range": f"bytes {start}-{end}/{music_size}",
+        "Accept-Ranges": "bytes",
+        "Content-Length": str(content_size),
+    }
+    
+    media_type = "audio/mpeg" if music.file_path.endswith(".mp3") else "audio/wav"
+    
+    return StreamingResponse(
+        get_file_chunk(music.file_path , start , end),
+        status_code=status_code,
+        media_type=media_type,
+        headers=headers
+    )

@@ -17,6 +17,7 @@ class MusicListResponse(
 ):
     id : int
     name : str
+    album_id : int
 
 class MusicDetailResponse(
     MusicListResponse
