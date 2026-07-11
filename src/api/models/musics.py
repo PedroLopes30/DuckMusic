@@ -2,7 +2,7 @@ from sqlmodel import SQLModel , Field , Relationship
 from typing import Optional
 
 from api.core.models import BaseModel
-from api.core.constants import SHORT_CHAR , LONG_CHAR
+from api.core.constants import SHORT_CHAR , LONG_CHAR , MEDIUM_CHAR
 
 class Artist(
     BaseModel,

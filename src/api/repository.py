@@ -31,8 +31,8 @@ class GenerictRepository(
         query = select(self.model)
         return self.session.exec(query).all()
     
-    def get_limited(self , limit : int , started_at : int)->list[M]:
-        query = select(self.model).offset(started_at).limit(limit)
+    def get_limited(self , limit : int , started_at : int , **filters)->list[M]:
+        query = select(self.model).offset(started_at).limit(limit).where(*[getattr(self.model , filter) == value for filter , value in filters.items()])
         return self.session.exec(query).all()
 
 class UserRepository(

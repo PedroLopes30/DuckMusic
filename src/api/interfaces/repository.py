@@ -30,7 +30,7 @@ class IRepository(
         pass
     
     @abstractmethod
-    def get_limited(self , limit : int , started_at : int)->list[M]:
+    def get_limited(self , limit : int , started_at : int , **filters)->list[M]:
         pass
 
 class IUserRepository(

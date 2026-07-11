@@ -63,8 +63,8 @@ def update_music(album : IsAlbumOnwer ,id_music: int, album_id : int , repositor
     tags=["index"],
     response_model=list[MusicListResponse]
 )
-def list_music(repository: MusicRepositoryDep, page: int = 0):
-    return repository.get_limited(15 , page)
+def list_music(repository: MusicRepositoryDep, page: int = 0 , q : str = ""):
+    return repository.get_limited(15 , page , name = q)
 
 @router.get(
     path="/albums/{id_album}/musics/",
